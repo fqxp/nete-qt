@@ -5,7 +5,7 @@ from PyQt5.QtQml import qmlRegisterType, qmlRegisterSingletonType, QQmlEngine, Q
 from nete.qtgui.qmltypes.qml_note_storage import QmlNoteStorage
 #from nete.note import Note
 #from nete.note_storage import NoteStorage
-#from nete.markdown_renderer import MarkdownRenderer
+from nete.services.markdown_renderer import MarkdownRenderer
 import os.path
 
 
@@ -17,6 +17,7 @@ class MainWindow(object):
         self._engine = QQmlEngine()
 
         qmlRegisterType(QmlNoteStorage, 'nete', 1, 0, 'NoteStorage')
+        qmlRegisterSingletonType(MarkdownRenderer, 'nete', 1, 0, 'MarkdownRenderer', self._make_renderer)
 
     def show(self):
         self._view = self._create_component()
@@ -30,9 +31,10 @@ class MainWindow(object):
 
         return component.create()
 
+    def _make_renderer(self, *args):
+        return MarkdownRenderer()
 
-#def _make_renderer(*args):
-#    return MarkdownRenderer()
+
 
 #if __name__ == '__main__':
 #    app = QGuiApplication(sys.argv)

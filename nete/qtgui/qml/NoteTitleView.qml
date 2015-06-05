@@ -3,6 +3,7 @@ import QtQuick.Layouts 1.1
 
 Item {
     id: container
+    state: "normal"
 
     property var note
 
@@ -13,7 +14,7 @@ Item {
             PropertyChanges { target: noteTitleShowView; visible: true }
         },
         State {
-            name: "editing-title"
+            name: "editing"
             PropertyChanges { target: noteTitleShowView; visible: false }
             PropertyChanges { target: noteTitleEditView; visible: true }
         }
@@ -26,7 +27,7 @@ Item {
         anchors.fill: parent
 
         onEditRequested: {
-            container.state = "editing-title";
+            container.state = "editing";
         }
     }
 

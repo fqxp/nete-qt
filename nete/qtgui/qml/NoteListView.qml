@@ -10,8 +10,8 @@ Rectangle {
 
     Component {
         id: noteDelegate
+
         Rectangle {
-            id: wrapper
             width: parent.width
             height: 50
             color: ListView.isCurrentItem ? "white" : "#666666"
@@ -21,17 +21,19 @@ Rectangle {
                 anchors { fill: parent; leftMargin: 10 }
                 text: modelData.title
                 font { pointSize: 12 }
-                color: wrapper.ListView.isCurrentItem ? "black" : "white"
+                color: parent.ListView.isCurrentItem ? "black" : "white"
                 elide: Text.ElideRight
                 verticalAlignment: Text.AlignVCenter
             }
 
             MouseArea {
-                anchors.fill: wrapper
+                anchors.fill: parent
                 onClicked: {
-                    wrapper.ListView.view.currentIndex = index;
-                    //wrapper.forceActiveFocus();   // TODO: needed?
-                    noteSelected(modelData);
+                    if (index != parent.ListView.view.currentIndex) {
+                        parent.ListView.view.currentIndex = index;
+                        //wrapper.forceActiveFocus();   // TODO: needed?
+                        noteSelected(modelData);
+                    }
                 }
             }
 

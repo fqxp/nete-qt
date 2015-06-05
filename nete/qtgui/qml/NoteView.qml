@@ -34,6 +34,7 @@ Rectangle {
                     anchors.margins: 3
 
                     NoteTitleView {
+                        id: noteTitleView
                         note: container.note
                         Layout.fillWidth: true
                         Layout.fillHeight: true
@@ -42,21 +43,30 @@ Rectangle {
                     Button {
                         id: editButton
                         text: "Edit"
-                        visible: true
+                        visible: !noteTextView.isEditing()
                         Layout.preferredHeight: parent.height - 6
+
+                        onClicked: {
+                            noteTextView.beginEditing();
+                        }
                     }
 
                     Button {
                         id: doneButton
                         text: "Done"
-                        visible: false
+                        visible: noteTextView.isEditing()
                         Layout.preferredHeight: parent.height - 6
+
+                        onClicked: {
+                            noteTextView.finishEditing();
+                        }
                     }
                 }
             }
 
-            Rectangle {
-                color: 'green'
+            NoteTextView {
+                id: noteTextView
+                note: container.note
                 Layout.fillWidth: true
                 Layout.fillHeight: true
             }
