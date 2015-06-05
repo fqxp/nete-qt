@@ -9,10 +9,10 @@ Rectangle {
     property var note: null
 
     onNoteChanged: {
-        console.log('note changed: ' + container);
+        console.log('note changed: ' + container.note);
         currentNoteView.destroy();
         currentNoteView = ((note !== null)
-            ? noteView.createObject(this)
+            ? noteView.createObject(this, {note: note})
             : emptyNoteView.createObject(this));
     }
 
@@ -24,6 +24,12 @@ Rectangle {
             rows: 2
             rowSpacing: 0
             anchors.fill: parent
+
+            property var note
+
+            Component.onDestruction: {
+                console.log("DESTRUCTION!!!!! " + note)
+            }
 
             Item {
                 Layout.fillWidth: true
@@ -79,6 +85,9 @@ Rectangle {
         Text {
             anchors.fill: parent
             text: "No note loaded."
+            verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: Text.AlignHCenter
+            font.pointSize: 16
         }
     }
 }
