@@ -18,7 +18,7 @@ class FilesystemNoteStorage(object):
         return notes
 
     def load(self, note_id):
-        note = Note()
+        note = Note(storage=self)
         note.id = note_id
 
         with open(self._filename_from_id(note_id)) as fd:

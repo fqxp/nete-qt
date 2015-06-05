@@ -39,6 +39,7 @@ Item {
 
         onEditFinished: {
             note.title = newTitle;
+            note.save()
             container.state = "normal";
         }
 

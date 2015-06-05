@@ -1,9 +1,13 @@
 class Note(object):
 
-    def __init__(self):
+    def __init__(self, storage):
+        self._storage = storage
         self._id = None
         self._title = ''
         self._text = ''
+
+    def save(self):
+        self._storage.save(self)
 
     @property
     def id(self):

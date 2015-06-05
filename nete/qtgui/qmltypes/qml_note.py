@@ -6,13 +6,17 @@ class QmlNote(QObject):
     textChanged = pyqtSignal(name='textChanged')
     titleChanged = pyqtSignal(name='titleChanged')
 
-    def __init__(self, note=Note(), parent=None):
+    def __init__(self, note, parent=None):
         super(QmlNote, self).__init__(parent)
         self._note = note
 
     @property
     def note(self):
         return self._note
+
+    @pyqtSlot()
+    def save(self):
+        self._note.save()
 
     @pyqtProperty(str)
     def id(self):

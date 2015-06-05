@@ -14,10 +14,7 @@ Rectangle {
     }
 
     function finishEditing() {
-        if (isEditing()) {
-            note.text = noteTextEditView.text;
-            state = "normal";
-        }
+        state = "normal";
     }
 
     function isEditing() {
@@ -57,6 +54,13 @@ Rectangle {
         textFormat: TextEdit.PlainText
         font { family: "Courier"; pointSize: 12 }
         anchors.fill: container
+
+        onTextChanged: {
+            if (isEditing()) {
+                note.text = text;
+                note.save();
+            }
+        }
 
         Keys.onEscapePressed: {
             container.finishEditing();
