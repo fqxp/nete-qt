@@ -53,6 +53,7 @@ Rectangle {
             anchors.fill: parent
             model: notes
             delegate: noteDelegate
+            currentIndex: -1
         }
     }
 }

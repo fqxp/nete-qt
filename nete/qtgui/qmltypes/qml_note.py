@@ -1,38 +1,41 @@
 from PyQt5.QtCore import QObject, pyqtProperty, pyqtSignal, pyqtSlot
+from nete.models.note import Note
 
 
 class QmlNote(QObject):
     textChanged = pyqtSignal(name='textChanged')
     titleChanged = pyqtSignal(name='titleChanged')
 
-    def __init__(self, parent=None):
+    def __init__(self, note=Note(), parent=None):
         super(QmlNote, self).__init__(parent)
-        self._id = None
-        self.title = ''
-        self.text = ''
+        self._note = note
+
+    @property
+    def note(self):
+        return self._note
 
     @pyqtProperty(str)
     def id(self):
-        return self._id
+        return self._note.id
 
     @id.setter
     def id(self, id):
-        self._id = id
+        self._note.id = id
 
     @pyqtProperty(str, notify=titleChanged)
     def title(self):
-        return self._title
+        return self._note.title
 
     @title.setter
     def title(self, title):
-        self._title = title
+        self._note.title = title
         self.titleChanged.emit()
 
     @pyqtProperty(unicode, notify=textChanged)
     def text(self):
-        return self._text
+        return self._note.text
 
     @text.setter
     def text(self, text):
-        self._text = text
+        self._note.text = text
         self.textChanged.emit()

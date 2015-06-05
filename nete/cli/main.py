@@ -2,15 +2,15 @@
 # coding: utf-8
 
 from nete.services.filesystem_note_storage import FilesystemNoteStorage
-from nete.cli.note import Note
+
 
 class CommandLineClient(object):
 
     def __init__(self):
-        self._storage = FilesystemNoteStorage('./notes', Note)
+        self._storage = FilesystemNoteStorage('./notes')
 
     def run(self, argv):
-        cmd = argv[1]
+        cmd = argv[1] if len(argv) > 1 else ''
 
         if cmd == 'list':
             self.list()
@@ -18,6 +18,12 @@ class CommandLineClient(object):
             self.view(argv[2])
         else:
             self.usage()
+
+    def usage(self):
+        print '''Available commands:
+list        List available notes
+view ID     View note starting with given ID
+'''
 
     def list(self):
         notes = self._storage.list()

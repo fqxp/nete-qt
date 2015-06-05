@@ -1,3 +1,4 @@
+from nete.models.note import Note
 import glob
 import json
 import os.path
@@ -5,9 +6,8 @@ import os.path
 
 class FilesystemNoteStorage(object):
 
-    def __init__(self, note_dir, note_factory):
+    def __init__(self, note_dir):
         self._note_dir = note_dir
-        self._note_factory = note_factory
 
     def list(self):
         notes = [
@@ -18,7 +18,7 @@ class FilesystemNoteStorage(object):
         return notes
 
     def load(self, note_id):
-        note = self._note_factory()
+        note = Note()
         note.id = note_id
 
         with open(self._filename_from_id(note_id)) as fd:
