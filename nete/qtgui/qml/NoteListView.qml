@@ -4,9 +4,24 @@ import QtQuick.Controls 1.2
 Rectangle {
     id: container
 
+    property var noteStorage
     property var notes: []
 
     signal noteSelected(var note)
+
+    Connections {
+        target: noteStorage
+        onNoteListUpdated: {
+            container.notes = notes;
+        }
+    }
+
+    Component.onCompleted: {
+        noteStorage.list();
+        if (notes.length > 0) {
+            noteSelected(notes[0]);
+        }
+    }
 
     Component {
         id: noteDelegate
@@ -53,7 +68,6 @@ Rectangle {
             anchors.fill: parent
             model: notes
             delegate: noteDelegate
-            currentIndex: -1
         }
     }
 }

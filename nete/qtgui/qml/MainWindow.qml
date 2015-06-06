@@ -7,20 +7,12 @@ Window {
     width: 640
     height: 400
 
-    Component.onCompleted: {
-        noteStorage.list();
-    }
-
     onClosing: {
         noteStorage.close();
     }
 
     NoteStorage {
         id: noteStorage
-
-        onNoteListUpdated: {
-            noteListView.notes = notes;
-        }
 
         onNoteSaved: {
             console.log("note saved!!!");
@@ -34,7 +26,7 @@ Window {
         anchors.fill: parent
 
         NoteListView {
-            id: noteListView
+            noteStorage: noteStorage
             Layout.preferredWidth: 200
             Layout.fillHeight: true
 
