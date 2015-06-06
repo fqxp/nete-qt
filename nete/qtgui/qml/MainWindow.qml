@@ -11,11 +11,19 @@ Window {
         noteStorage.list();
     }
 
+    onClosing: {
+        noteStorage.close();
+    }
+
     NoteStorage {
         id: noteStorage
 
         onNoteListUpdated: {
             noteListView.notes = notes;
+        }
+
+        onNoteSaved: {
+            console.log("note saved!!!");
         }
     }
 

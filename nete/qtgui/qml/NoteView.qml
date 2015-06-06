@@ -27,10 +27,6 @@ Rectangle {
 
             property var note
 
-            Component.onDestruction: {
-                console.log("DESTRUCTION!!!!! " + note)
-            }
-
             Item {
                 Layout.fillWidth: true
                 Layout.preferredHeight: 40
