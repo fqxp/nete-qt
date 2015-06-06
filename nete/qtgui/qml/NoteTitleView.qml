@@ -37,6 +37,11 @@ Item {
         visible: false
         anchors.fill: parent
 
+        Component.onCompleted: {
+            selectAll();
+            forceActiveFocus();
+        }
+
         onEditFinished: {
             note.title = newTitle;
             note.save()

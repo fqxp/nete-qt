@@ -2,6 +2,7 @@ from nete.models.note import Note
 import glob
 import json
 import os.path
+import uuid
 
 
 class FilesystemNoteStorage(object):
@@ -29,6 +30,9 @@ class FilesystemNoteStorage(object):
         return note
 
     def save(self, note):
+        if note.id is None:
+            note.id = str(uuid.uuid4())
+
         print "Saving note %s" % note.id
 
         with open(self._filename_from_id(note.id), 'w') as fd:
@@ -37,6 +41,9 @@ class FilesystemNoteStorage(object):
                 'text': note.text,
             }
             json.dump(content, fd)
+
+    def create(self):
+        return Note()
 
     def _filename_from_id(self, id):
         return os.path.join('notes', '%s.md' % id)

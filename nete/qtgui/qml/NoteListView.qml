@@ -1,5 +1,6 @@
 import QtQuick 2.3
 import QtQuick.Controls 1.2
+import QtQuick.Layouts 1.1
 
 Rectangle {
     id: container
@@ -8,19 +9,20 @@ Rectangle {
     property var notes: []
 
     signal noteSelected(var note)
+    signal noteCreated(var note)
 
     Connections {
         target: noteStorage
         onNoteListUpdated: {
             container.notes = notes;
+            if (container.notes.length > 0) {
+                noteSelected(container.notes[0]);
+            }
         }
     }
 
     Component.onCompleted: {
         noteStorage.list();
-        if (notes.length > 0) {
-            noteSelected(notes[0]);
-        }
     }
 
     Component {
@@ -61,13 +63,44 @@ Rectangle {
         }
     }
 
-    ScrollView {
+    ColumnLayout {
         anchors.fill: parent
 
-        ListView {
-            anchors.fill: parent
-            model: notes
-            delegate: noteDelegate
+        ScrollView {
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+
+            ListView {
+                id: listView
+                anchors.fill: parent
+                model: notes
+                delegate: noteDelegate
+            }
+        }
+
+        Rectangle {
+            Layout.fillWidth: true
+            Layout.preferredHeight: 40
+            color: "#666666"
+
+            Text {
+                anchors.fill: parent
+                text: "New Note"
+                font.pointSize: 16
+                color: "white"
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+            }
+
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    var newNote = noteStorage.create();
+                    container.notes = container.notes.concat([newNote])
+                    listView.currentIndex = container.notes.length - 1;
+                    noteCreated(newNote);
+                }
+            }
         }
     }
 }

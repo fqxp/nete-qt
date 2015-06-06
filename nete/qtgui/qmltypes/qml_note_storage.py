@@ -60,6 +60,7 @@ class QmlNoteStorage(QObject):
     noteListUpdated = pyqtSignal(QVariant, arguments=['notes'])
     noteLoaded = pyqtSignal(QVariant, arguments=['note'])
     noteSaved = pyqtSignal(QVariant, arguments=['note'])
+    noteCreated = pyqtSignal(QVariant, arguments=['note'])
 
     def __init__(self, parent=None):
         super(QmlNoteStorage, self).__init__(parent)
@@ -82,6 +83,12 @@ class QmlNoteStorage(QObject):
     def load(self, note_id):
         self._storage.load(note_id)
         self.noteLoaded.emit(QVariant(QmlNote(note, parent=self)))
+
+    @pyqtSlot(result=QmlNote)
+    def create(self):
+        note = self._storage.create()
+        note.title = "Unnamed"
+        return QmlNote(note, parent=self)
 
     @pyqtSlot(QmlNote)
     def save(self, qml_note):

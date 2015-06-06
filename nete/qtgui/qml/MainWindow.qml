@@ -33,6 +33,10 @@ Window {
             onNoteSelected: {
                 noteView.note = note;
             }
+
+            onNoteCreated: {
+                noteView.note = note;
+            }
         }
 
         NoteView {

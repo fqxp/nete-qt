@@ -40,6 +40,12 @@ Rectangle {
                         note: container.note
                         Layout.fillWidth: true
                         Layout.fillHeight: true
+
+                        Component.onCompleted: {
+                            if (note.id === '') {
+                                state = "editing";
+                            }
+                        }
                     }
 
                     Button {
