@@ -1,4 +1,4 @@
-from PyQt5.QtCore import Qt, QObject, pyqtSignal, pyqtSlot, QVariant
+from PyQt5.QtCore import Qt, QObject, pyqtSignal, pyqtSlot, QVariant, QAbstractListModel, QModelIndex
 from PyQt5.QtQml import QQmlListProperty
 from .qml_note import QmlNote
 from nete.services.filesystem_note_storage import FilesystemNoteStorage
@@ -54,13 +54,36 @@ class LazySaver(threading.Thread):
       self._counter +=  1
 
 
+class QmlNoteListModel(QAbstractListModel):
+    def __init__(self, qml_notes=[], parent=None):
+        super(QmlNoteListModel, self).__init__(parent)
+        self._notes = qml_notes
+
+    def rowCount(self, parent=QModelIndex()):
+        return len(self._notes)
+
+    def data(self, index, role=Qt.DisplayRole):
+        return self._notes[index.row()]
+
+    def roleNames(self):
+        return {
+            Qt.DisplayRole: 'display'
+        }
+
+    @pyqtSlot('QVariant', result=int)
+    def add(self, note):
+        self.beginInsertRows(QModelIndex(), 0, 0)
+        self._notes.insert(0, note)
+        self.endInsertRows()
+        return 0
+
+
 class QmlNoteStorage(QObject):
     NOTE_DIR = './notes'
 
     noteListUpdated = pyqtSignal(QVariant, arguments=['notes'])
     noteLoaded = pyqtSignal(QVariant, arguments=['note'])
     noteSaved = pyqtSignal(QVariant, arguments=['note'])
-    noteCreated = pyqtSignal(QVariant, arguments=['note'])
 
     def __init__(self, parent=None):
         super(QmlNoteStorage, self).__init__(parent)
@@ -75,11 +98,12 @@ class QmlNoteStorage(QObject):
     @pyqtSlot()
     def list(self):
         notes = self._storage.list()
-        qml_notes = [QmlNote(note, parent=self)
-                     for note in notes]
-        self.noteListUpdated.emit(QVariant(qml_notes))
+        qml_notes = QmlNoteListModel(
+            [QmlNote(note, parent=self) for note in notes],
+            parent=self)
+        self.noteListUpdated.emit(qml_notes)
 
-    @pyqtSlot('QString', result=QmlNote)
+    @pyqtSlot('QString')
     def load(self, note_id):
         self._storage.load(note_id)
         self.noteLoaded.emit(QVariant(QmlNote(note, parent=self)))

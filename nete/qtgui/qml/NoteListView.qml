@@ -13,6 +13,7 @@ Rectangle {
 
     Connections {
         target: noteStorage
+
         onNoteListUpdated: {
             container.notes = notes;
             if (container.notes.length > 0) {
@@ -23,6 +24,13 @@ Rectangle {
 
     Component.onCompleted: {
         noteStorage.list();
+    }
+
+    function createNewNote() {
+        var newNote = noteStorage.create();
+        var index = notes.add(newNote);
+        listView.currentIndex = index;
+        noteCreated(newNote);
     }
 
     Component {
@@ -48,7 +56,6 @@ Rectangle {
                 onClicked: {
                     if (index != parent.ListView.view.currentIndex) {
                         parent.ListView.view.currentIndex = index;
-                        //wrapper.forceActiveFocus();   // TODO: needed?
                         noteSelected(modelData);
                     }
                 }
@@ -95,10 +102,7 @@ Rectangle {
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
-                    var newNote = noteStorage.create();
-                    container.notes = container.notes.concat([newNote])
-                    listView.currentIndex = container.notes.length - 1;
-                    noteCreated(newNote);
+                    createNewNote();
                 }
             }
         }
