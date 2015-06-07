@@ -9,6 +9,9 @@ import sys
 if __name__ == '__main__':
     app = QGuiApplication(sys.argv)
 
+    app.setOrganizationName('nete')
+    app.setApplicationName('nete-qt')
+
     main_window = MainWindow()
     main_window.show()
 
