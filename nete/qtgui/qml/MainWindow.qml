@@ -49,7 +49,7 @@ Window {
 
             onNoteCreated: {
                 noteView.note = note;
-                noteStorage.lazy_save(note)
+                note.lazySave();
             }
         }
 

@@ -19,8 +19,8 @@ class QmlNote(QObject):
         self.parent().save(self)
 
     @pyqtSlot()
-    def lazy_save(self):
-        self.parent().lazy_save(self)
+    def lazySave(self):
+        self.parent().lazySave(self)
 
     @pyqtProperty(str)
     def id(self):

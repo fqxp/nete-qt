@@ -119,5 +119,5 @@ class QmlNoteStorage(QObject):
         self._storage.save(qml_note.note)
 
     @pyqtSlot(QmlNote)
-    def lazy_save(self, qml_note):
+    def lazySave(self, qml_note):
         self._lazy_saver.lazy_save(qml_note)
