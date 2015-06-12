@@ -4,6 +4,9 @@
 Do not put any positioning information into top-level components. Makes it
 easier to position them from outside.
 
+# Development
+Development is organized using a Trello board: https://trello.com/b/YBRdEK7r/nete
+
 # Requirements
 
 Debian packages:
