@@ -21,6 +21,10 @@ Window {
         }
     }
 
+    FontAwesome {
+        id: awesome
+    }
+
     Settings {
         property alias x: window.x
         property alias y: window.y

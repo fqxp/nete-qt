@@ -1,6 +1,7 @@
 import QtQuick 2.3
 import QtQuick.Controls 1.2
 import QtQuick.Layouts 1.1
+import "controls" as Awesome
 
 Rectangle {
     id: container
@@ -72,6 +73,7 @@ Rectangle {
 
     ColumnLayout {
         anchors.fill: parent
+        spacing: 0
 
         ScrollView {
             Layout.fillWidth: true
@@ -85,25 +87,12 @@ Rectangle {
             }
         }
 
-        Rectangle {
+        CreateNoteButton {
             Layout.fillWidth: true
             Layout.preferredHeight: 40
-            color: "#666666"
 
-            Text {
-                anchors.fill: parent
-                text: "New Note"
-                font.pointSize: 16
-                color: "white"
-                horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter
-            }
-
-            MouseArea {
-                anchors.fill: parent
-                onClicked: {
-                    createNewNote();
-                }
+            onClicked: {
+                createNewNote();
             }
         }
     }
