@@ -16,6 +16,10 @@ Rectangle {
             : emptyNoteView.createObject(this));
     }
 
+    function focusTitleEditor() {
+        currentNoteView.focusTitleEditor();
+    }
+
     Component {
         id: noteView
 
@@ -26,6 +30,10 @@ Rectangle {
             anchors.fill: parent
 
             property var note
+
+            function focusTitleEditor() {
+                noteTitleView.state = "editing";
+            }
 
             Item {
                 Layout.fillWidth: true
@@ -45,12 +53,6 @@ Rectangle {
                         note: container.note
                         Layout.fillWidth: true
                         Layout.fillHeight: true
-
-                        Component.onCompleted: {
-                            if (note.id === "") {
-                                state = "editing";
-                            }
-                        }
                     }
 
                     Button {

@@ -48,8 +48,9 @@ Window {
             }
 
             onNoteCreated: {
-                noteView.note = note;
                 note.lazySave();
+                noteView.note = note;
+                noteView.focusTitleEditor();
             }
         }
 
