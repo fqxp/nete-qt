@@ -14,6 +14,10 @@ Rectangle {
         return state == "editing";
     }
 
+    function toggleState() {
+        state = (state == "normal") ? "editing" : "normal";
+    }
+
     states: [
         State {
             name: "normal"
@@ -72,15 +76,14 @@ Rectangle {
             Keys.onEscapePressed: {
                 container.state = "normal";
             }
+        }
+    }
 
-            Keys.onReturnPressed: {
-                if (event.modifiers == Qt.ControlModifier) {
-                    container.state = "normal";
-                } else {
-                    event.accepted = false;
-                }
-            }
+    Action {
+        id: editTextAction
+        shortcut: "Ctrl+Return"
+        onTriggered: {
+            toggleState();
         }
     }
 }
-

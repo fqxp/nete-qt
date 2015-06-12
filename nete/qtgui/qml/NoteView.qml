@@ -61,7 +61,7 @@ Rectangle {
                         Layout.preferredHeight: parent.height - 6
 
                         onClicked: {
-                            noteTextView.state = noteTextView.state == "normal" ? "editing" : "normal";
+                            noteTextView.toggleState();
                         }
                     }
                 }

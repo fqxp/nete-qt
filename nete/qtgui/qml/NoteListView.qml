@@ -43,6 +43,10 @@ Rectangle {
             color: ListView.isCurrentItem ? "white" : "#666666"
             border { width: 1; color: "#999999" }
 
+            function select() {
+                noteSelected(modelData);
+            }
+
             Text {
                 anchors { fill: parent; leftMargin: 10 }
                 text: modelData.title
@@ -57,7 +61,6 @@ Rectangle {
                 onClicked: {
                     if (index != parent.ListView.view.currentIndex) {
                         parent.ListView.view.currentIndex = index;
-                        noteSelected(modelData);
                     }
                 }
             }
@@ -84,6 +87,10 @@ Rectangle {
                 anchors.fill: parent
                 model: notes
                 delegate: noteDelegate
+
+                onCurrentItemChanged: {
+                    listView.currentItem.select();
+                }
             }
         }
 
@@ -92,8 +99,32 @@ Rectangle {
             Layout.preferredHeight: 40
 
             onClicked: {
-                createNewNote();
+                createAction.trigger();
             }
+        }
+    }
+
+    Action {
+        id: createAction
+        shortcut: StandardKey.New
+        onTriggered: {
+            createNewNote();
+        }
+    }
+
+    Action {
+        id: previousNoteAction
+        shortcut: "Ctrl+PgUp"
+        onTriggered: {
+            listView.decrementCurrentIndex();
+        }
+    }
+
+    Action {
+        id: nextNoteAction
+        shortcut: "Ctrl+PgDown"
+        onTriggered: {
+            listView.incrementCurrentIndex();
         }
     }
 }
