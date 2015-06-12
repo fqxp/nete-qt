@@ -37,9 +37,11 @@ Item {
         visible: false
         anchors.fill: parent
 
-        Component.onCompleted: {
-            selectAll();
-            forceActiveFocus();
+        onVisibleChanged: {
+            if (visible) {
+                selectAll();
+                forceActiveFocus();
+            }
         }
 
         onEditFinished: {
