@@ -10,14 +10,6 @@ Rectangle {
     property var note
     property var currentView: null
 
-    function beginEditing() {
-        state = "editing";
-    }
-
-    function finishEditing() {
-        state = "normal";
-    }
-
     function isEditing() {
         return state == "editing";
     }
@@ -78,12 +70,12 @@ Rectangle {
             }
 
             Keys.onEscapePressed: {
-                container.finishEditing();
+                container.state = "normal";
             }
 
             Keys.onReturnPressed: {
                 if (event.modifiers == Qt.ControlModifier) {
-                    container.finishEditing();
+                    container.state = "normal";
                 } else {
                     event.accepted = false;
                 }
