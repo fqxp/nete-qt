@@ -31,6 +31,11 @@ Rectangle {
                 Layout.fillWidth: true
                 Layout.preferredHeight: 40
 
+                Rectangle {
+                    color: "green"
+                    anchors.fill: parent
+                }
+
                 RowLayout {
                     anchors.fill: parent
                     anchors.margins: 3
