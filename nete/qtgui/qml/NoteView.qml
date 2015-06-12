@@ -5,7 +5,7 @@ import QtQuick.Layouts 1.1
 Rectangle {
     id: container
 
-    property var currentNoteView: emptyNoteView.createObject(this)
+    property Item currentNoteView: emptyNoteView.createObject(this)
     property var note: null
 
     onNoteChanged: {
@@ -47,7 +47,7 @@ Rectangle {
                         Layout.fillHeight: true
 
                         Component.onCompleted: {
-                            if (note.id === '') {
+                            if (note.id === "") {
                                 state = "editing";
                             }
                         }
@@ -55,23 +55,11 @@ Rectangle {
 
                     Button {
                         id: editButton
-                        text: "Edit"
-                        visible: !noteTextView.isEditing()
+                        text: noteTextView.state == "normal" ? "Edit" : "Done";
                         Layout.preferredHeight: parent.height - 6
 
                         onClicked: {
-                            noteTextView.state = "editing";
-                        }
-                    }
-
-                    Button {
-                        id: doneButton
-                        text: "Done"
-                        visible: noteTextView.isEditing()
-                        Layout.preferredHeight: parent.height - 6
-
-                        onClicked: {
-                            noteTextView.state = "normal";
+                            noteTextView.state = noteTextView.state == "normal" ? "editing" : "normal";
                         }
                     }
                 }
