@@ -10,17 +10,7 @@ Window {
     width: 640
     height: 400
 
-    onClosing: {
-        noteStorage.close();
-    }
-
-    NoteStorage {
-        id: noteStorage
-
-        onNoteSaved: {
-            console.log("note saved!!!");
-        }
-    }
+    property NoteStorage noteStorage
 
     FontAwesome {
         id: awesome
@@ -40,7 +30,7 @@ Window {
         anchors.fill: parent
 
         NoteListView {
-            noteStorage: noteStorage
+            noteStorage: window.noteStorage
             Layout.preferredWidth: 200
             Layout.fillHeight: true
 

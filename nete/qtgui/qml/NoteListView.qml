@@ -2,18 +2,20 @@ import QtQuick 2.3
 import QtQuick.Controls 1.2
 import QtQuick.Layouts 1.1
 import "controls" as Awesome
+import nete 1.0
 
 Rectangle {
     id: container
 
-    property var noteStorage
+    property NoteStorage noteStorage
     property var notes: []
 
     signal noteSelected(var note)
     signal noteCreated(var note)
 
     Connections {
-        target: noteStorage
+        id: noteStorageConnections
+        target: null
 
         onNoteListUpdated: {
             container.notes = notes;
@@ -23,8 +25,11 @@ Rectangle {
         }
     }
 
-    Component.onCompleted: {
-        noteStorage.list();
+    onNoteStorageChanged: {
+        if (noteStorage !== null) {
+            noteStorageConnections.target = noteStorage;
+            noteStorage.list();
+        }
     }
 
     function createNewNote() {
