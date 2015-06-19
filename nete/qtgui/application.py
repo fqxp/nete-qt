@@ -20,6 +20,7 @@ class Application(QApplication):
         self._note_storage = QmlNoteStorage(parent=self)
 
         self._main_window = MainWindowBuilder(self.qml_engine).build(self._note_storage)
+        self._main_window.show()
 
         self._tray_icon = TrayIcon(self)
         self._tray_icon.activated.connect(self.tray_icon_activated)
@@ -37,6 +38,7 @@ class Application(QApplication):
 
     def _init_qml_engine(self):
         self.qml_engine = QQmlEngine()
+        self.qml_engine.quit.connect(self.quit)
 
         qmlRegisterType(QmlNoteStorage, 'nete', 1, 0, 'NoteStorage')
         qmlRegisterSingletonType(MarkdownRenderer, 'nete', 1, 0, 'MarkdownRenderer', self._make_renderer)

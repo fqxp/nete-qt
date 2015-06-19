@@ -51,4 +51,13 @@ Window {
             Layout.fillHeight: true
         }
     }
+
+    Action {
+        id: quitAction
+        shortcut: "Ctrl+q"
+        onTriggered: {
+            console.log('QUTITITIT');
+            Qt.quit()
+        }
+    }
 }
