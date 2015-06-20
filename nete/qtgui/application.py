@@ -1,9 +1,9 @@
 from PyQt5.QtWidgets import QApplication, QWidget
 from PyQt5.QtQml import (qmlRegisterType, qmlRegisterSingletonType,
                          QQmlEngine)
-from nete.qtgui.main_window import MainWindowBuilder
+from nete.qtgui.main_window_builder import MainWindowBuilder
 from nete.qtgui.tray_icon import TrayIcon
-from nete.qtgui.qmltypes.qml_note_storage import QmlNoteStorage
+from nete.qtgui.qmltypes.qml_note_list_model import QmlNoteListModel
 from nete.services.markdown_renderer import MarkdownRenderer
 
 
@@ -17,20 +17,14 @@ class Application(QApplication):
 
         self._init_qml_engine()
 
-        self._note_storage = QmlNoteStorage(parent=self)
+        self._note_list_model = QmlNoteListModel(parent=self)
 
-        self._main_window = MainWindowBuilder(self.qml_engine).build(self._note_storage)
+        self._main_window = MainWindowBuilder(self.qml_engine).build(self._note_list_model)
         self._main_window.show()
 
         self._tray_icon = TrayIcon(self)
         self._tray_icon.activated.connect(self.tray_icon_activated)
         self._tray_icon.show()
-
-        self.aboutToQuit.connect(self.stopServices)
-
-    def stopServices(self):
-        # TODO somehow do this automatically, like onDestroy, but how?
-        self._note_storage.close()
 
     def tray_icon_activated(self, reason):
         if reason == TrayIcon.Trigger:
@@ -40,7 +34,7 @@ class Application(QApplication):
         self.qml_engine = QQmlEngine()
         self.qml_engine.quit.connect(self.quit)
 
-        qmlRegisterType(QmlNoteStorage, 'nete', 1, 0, 'NoteStorage')
+        qmlRegisterType(QmlNoteListModel, 'nete', 1, 0, 'NoteList')
         qmlRegisterSingletonType(MarkdownRenderer, 'nete', 1, 0, 'MarkdownRenderer', self._make_renderer)
 
     def _make_renderer(self, *args):

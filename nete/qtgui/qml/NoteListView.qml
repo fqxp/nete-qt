@@ -1,42 +1,26 @@
 import QtQuick 2.3
 import QtQuick.Controls 1.2
 import QtQuick.Layouts 1.1
-import "controls" as Awesome
 import nete 1.0
 
 Rectangle {
     id: container
 
-    property NoteStorage noteStorage
-    property var notes: []
+    property NoteList noteList
 
-    signal noteSelected(var note)
-    signal noteCreated(var note)
+    signal noteSelected(string noteId)
 
     Connections {
-        id: noteStorageConnections
+        id: noteListConnections
         target: null
 
-        onNoteListUpdated: {
-            container.notes = notes;
-            if (container.notes.length > 0) {
-                noteSelected(container.notes[0]);
-            }
+        onNoteCreated: {
+            listView.currentIndex = row;
         }
     }
 
-    onNoteStorageChanged: {
-        if (noteStorage !== null) {
-            noteStorageConnections.target = noteStorage;
-            noteStorage.list();
-        }
-    }
-
-    function createNewNote() {
-        var newNote = noteStorage.create();
-        var index = notes.add(newNote);
-        listView.currentIndex = index;
-        noteCreated(newNote);
+    onNoteListChanged: {
+        noteListConnections.target = noteList;
     }
 
     Component {
@@ -49,12 +33,12 @@ Rectangle {
             border { width: 1; color: "#999999" }
 
             function select() {
-                noteSelected(modelData);
+                noteSelected(id);
             }
 
             Text {
                 anchors { fill: parent; leftMargin: 10 }
-                text: modelData.title
+                text: title
                 font { pointSize: 12 }
                 color: parent.ListView.isCurrentItem ? "black" : "white"
                 elide: Text.ElideRight
@@ -66,14 +50,8 @@ Rectangle {
                 onClicked: {
                     if (index != parent.ListView.view.currentIndex) {
                         parent.ListView.view.currentIndex = index;
+                        noteSelected(id);
                     }
-                }
-            }
-
-            Behavior on color {
-                ColorAnimation {
-                    duration: 100
-                    easing.type: Easing.OutCubic
                 }
             }
         }
@@ -90,7 +68,7 @@ Rectangle {
             ListView {
                 id: listView
                 anchors.fill: parent
-                model: notes
+                model: noteList
                 delegate: noteDelegate
 
                 onCurrentItemChanged: {
@@ -104,16 +82,16 @@ Rectangle {
             Layout.preferredHeight: 40
 
             onClicked: {
-                createAction.trigger();
+                createNoteAction.trigger();
             }
         }
     }
 
     Action {
-        id: createAction
+        id: createNoteAction
         shortcut: StandardKey.New
         onTriggered: {
-            createNewNote();
+            noteList.create();
         }
     }
 

@@ -10,7 +10,7 @@ Window {
     width: 640
     height: 400
 
-    property NoteStorage noteStorage
+    property NoteList noteList
 
     FontAwesome {
         id: awesome
@@ -23,6 +23,21 @@ Window {
         property alias height: window.height
     }
 
+    Connections {
+        id: noteListConnections
+        target: null
+
+        onNoteCreated: {
+            noteView.note = note;
+            noteView.focusTitleEditor();
+        }
+    }
+
+    onNoteListChanged: {
+        noteList.load();
+        noteListConnections.target = noteList;
+    }
+
     GridLayout {
         columns: 2
         rows: 1
@@ -30,18 +45,12 @@ Window {
         anchors.fill: parent
 
         NoteListView {
-            noteStorage: window.noteStorage
+            noteList: window.noteList
             Layout.preferredWidth: 200
             Layout.fillHeight: true
 
             onNoteSelected: {
-                noteView.note = note;
-            }
-
-            onNoteCreated: {
-                note.lazySave();
-                noteView.note = note;
-                noteView.focusTitleEditor();
+                noteView.note = noteList.note(noteId);
             }
         }
 

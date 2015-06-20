@@ -69,7 +69,7 @@ Rectangle {
             onTextChanged: {
                 if (isEditing()) {
                     container.note.text = text;
-                    note.lazySave();
+                    note.save();
                 }
             }
 

@@ -11,13 +11,13 @@ class MainWindowBuilder(object):
     def __init__(self, qml_engine):
         self._engine = qml_engine
 
-    def build(self, note_storage):
+    def build(self, note_list_model):
         component = QQmlComponent(self._engine, QUrl(self.APP_QML))
 
         for error in component.errors():
             print 'QML error: %s' % error.toString()
 
         main_window = component.create()
-        main_window.setProperty('noteStorage', note_storage)
+        main_window.setProperty('noteList', note_list_model)
 
         return main_window
