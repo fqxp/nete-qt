@@ -61,10 +61,15 @@ Rectangle {
 
         TextArea {
             readOnly: false
+            focus: true
             wrapMode: Text.Wrap
             textFormat: TextEdit.PlainText
             font { family: "Courier"; pointSize: 12 }
             anchors.fill: container
+
+            Component.onCompleted: {
+                cursorPosition = length;
+            }
 
             onTextChanged: {
                 if (isEditing()) {
