@@ -26,14 +26,15 @@ class QmlNote(QObject):
     def id(self, id):
         self._note.id = id
 
-    @pyqtProperty(str, notify=titleChanged)
+    @pyqtProperty(unicode, notify=titleChanged)
     def title(self):
         return self._note.title
 
     @title.setter
     def title(self, title):
-        self._note.title = title
-        self.titleChanged.emit()
+        if title != self._note.title:
+            self._note.title = title
+            self.titleChanged.emit()
 
     @pyqtProperty(unicode, notify=textChanged)
     def text(self):
@@ -41,5 +42,6 @@ class QmlNote(QObject):
 
     @text.setter
     def text(self, text):
-        self._note.text = text
-        self.textChanged.emit()
+        if text != self._note.text:
+            self._note.text = text
+            self.textChanged.emit()

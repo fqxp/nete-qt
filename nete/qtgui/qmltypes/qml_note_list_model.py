@@ -4,18 +4,12 @@ from .qml_note import QmlNote
 from nete.services.filesystem_note_storage import FilesystemNoteStorage
 
 
-import sys
-import threading
-import time
-
-
 class QmlNoteListModel(QAbstractListModel):
 
     NOTE_DIR = './notes'
 
     IdRole = Qt.UserRole + 1
     TitleRole = Qt.UserRole + 2
-    TextRole = Qt.UserRole + 3
 
     noteCreated = pyqtSignal(QmlNote, int, arguments=['note', 'row'])
 
@@ -27,11 +21,23 @@ class QmlNoteListModel(QAbstractListModel):
     @property
     def notes(self):
         if self._notes is None:
-            notes = self._storage.list()
-            self._notes = [
-                QmlNote(note, parent=self)
-                for note in notes]
+            self._load()
         return self._notes
+
+    def _load(self):
+        notes = self._storage.list()
+        self._notes = []
+        for note in notes:
+            qml_note = QmlNote(note, parent=self)
+            qml_note.titleChanged.connect(self._noteTitleChanged)
+            self._notes.append(qml_note)
+
+    @pyqtSlot()
+    def _noteTitleChanged(self):
+        index = self._notes.index(self.sender())
+        self.dataChanged.emit(self.createIndex(index, 0),
+                              self.createIndex(index, 0),
+                              [self.TitleRole])
 
     def rowCount(self, parent=QModelIndex()):
         return len(self.notes)
@@ -42,15 +48,12 @@ class QmlNoteListModel(QAbstractListModel):
             return note.id
         elif role == self.TitleRole:
             return note.title
-        elif role == self.TextRole:
-            return note.text
 
     def roleNames(self):
         return {
             Qt.DisplayRole: 'display',
             self.IdRole: 'id',
             self.TitleRole: 'title',
-            self.TextRole: 'text',
         }
 
     @pyqtSlot('QString', result=QmlNote)
