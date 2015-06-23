@@ -17,9 +17,7 @@ class Application(QApplication):
 
         self._init_qml_engine()
 
-        self._note_list_model = QmlNoteListModel(parent=self)
-
-        self._main_window = MainWindowBuilder(self.qml_engine).build(self._note_list_model)
+        self._main_window = MainWindowBuilder(self.qml_engine).build()
         self._main_window.show()
 
         self._tray_icon = TrayIcon(self)

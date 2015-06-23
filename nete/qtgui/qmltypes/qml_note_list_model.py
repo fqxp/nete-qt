@@ -19,16 +19,25 @@ class QmlNoteListModel(QAbstractListModel):
 
     noteCreated = pyqtSignal(QmlNote, int, arguments=['note', 'row'])
 
-    def __init__(self, qml_notes=None, parent=None):
+    def __init__(self, parent=None):
         super(QmlNoteListModel, self).__init__(parent)
         self._storage = FilesystemNoteStorage(self.NOTE_DIR)
-        self._notes = qml_notes
+        self._notes = None
+
+    @property
+    def notes(self):
+        if self._notes is None:
+            notes = self._storage.list()
+            self._notes = [
+                QmlNote(note, parent=self)
+                for note in notes]
+        return self._notes
 
     def rowCount(self, parent=QModelIndex()):
-        return len(self._notes)
+        return len(self.notes)
 
     def data(self, index, role=Qt.DisplayRole):
-        note = self._notes[index.row()]
+        note = self.notes[index.row()]
         if role == self.IdRole:
             return note.id
         elif role == self.TitleRole:
@@ -44,16 +53,11 @@ class QmlNoteListModel(QAbstractListModel):
             self.TextRole: 'text',
         }
 
-    @pyqtSlot()
-    def load(self):
-        notes = self._storage.list()
-        self._notes = [QmlNote(note, parent=self) for note in notes]
-
     @pyqtSlot('QString', result=QmlNote)
     def note(self, note_id):
         return filter(
                 lambda note: note.id == note_id,
-                self._notes)[0]
+                self.notes)[0]
 
     @pyqtSlot(QmlNote)
     def save(self, qml_note):
@@ -66,7 +70,7 @@ class QmlNoteListModel(QAbstractListModel):
 
         row = 0
         self.beginInsertRows(QModelIndex(), row, row)
-        self._notes.insert(row, note)
+        self.notes.insert(row, note)
         self.endInsertRows()
 
         self.noteCreated.emit(note, row)

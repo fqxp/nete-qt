@@ -10,8 +10,6 @@ Window {
     width: 640
     height: 400
 
-    property NoteList noteList
-
     FontAwesome {
         id: awesome
     }
@@ -23,19 +21,13 @@ Window {
         property alias height: window.height
     }
 
-    Connections {
-        id: noteListConnections
-        target: null
+    NoteList {
+        id: noteList
 
         onNoteCreated: {
             noteView.note = note;
             noteView.focusTitleEditor();
         }
-    }
-
-    onNoteListChanged: {
-        noteList.load();
-        noteListConnections.target = noteList;
     }
 
     GridLayout {
@@ -45,7 +37,7 @@ Window {
         anchors.fill: parent
 
         NoteListView {
-            noteList: window.noteList
+            noteList: noteList
             Layout.preferredWidth: 200
             Layout.fillHeight: true
 
@@ -65,7 +57,6 @@ Window {
         id: quitAction
         shortcut: "Ctrl+q"
         onTriggered: {
-            console.log('QUTITITIT');
             Qt.quit()
         }
     }
