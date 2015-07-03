@@ -10,7 +10,5 @@ if __name__ == '__main__':
     #profile.run('sys.exit(app.exec_())')
 
     app = Application(sys.argv)
-    app.setOrganizationName('nete')
-    app.setApplicationName('nete-qt')
 
     sys.exit(app.exec_())

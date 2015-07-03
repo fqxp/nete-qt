@@ -1,6 +1,6 @@
 import sys
 from PyQt5.QtCore import QUrl
-from PyQt5.QtQml import QQmlComponent, QQmlContext
+from PyQt5.QtQml import QQmlComponent
 import os.path
 
 
@@ -12,11 +12,8 @@ class MainWindowBuilder(object):
         self._engine = qml_engine
 
     def build(self):
-        component = QQmlComponent(self._engine, QUrl(self.APP_QML))
+        self._engine.load(QUrl(self.APP_QML))
 
-        for error in component.errors():
-            print 'QML error: %s' % error.toString()
-
-        main_window = component.create()
+        main_window = self._engine.rootObjects()[0]
 
         return main_window

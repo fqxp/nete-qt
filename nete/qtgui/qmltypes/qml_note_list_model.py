@@ -78,3 +78,11 @@ class QmlNoteListModel(QAbstractListModel):
 
         self.noteCreated.emit(note, row)
 
+    @pyqtSlot(QmlNote)
+    def delete(self, qml_note):
+        row = self._notes.index(qml_note)
+        self.beginRemoveRows(QModelIndex(), row, row)
+        del self._notes[row]
+        self.endRemoveRows()
+
+        self._storage.delete(qml_note)

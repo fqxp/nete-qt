@@ -45,6 +45,9 @@ class FilesystemNoteStorage(object):
     def create(self):
         return Note()
 
+    def delete(self, note):
+        os.unlink(self._filename_from_id(note.id))
+
     def _filename_from_id(self, id):
         return os.path.join('notes', '%s.md' % id)
 

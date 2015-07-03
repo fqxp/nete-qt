@@ -1,7 +1,7 @@
 import QtQuick 2.3
-import QtQuick.Window 2.2
-import QtQuick.Layouts 1.1
 import QtQuick.Controls 1.2
+import QtQuick.Layouts 1.1
+import QtQuick.Window 2.2
 import Qt.labs.settings 1.0
 import nete 1.0
 
@@ -53,11 +53,14 @@ Window {
         }
     }
 
+    Connections {
+        target: noteView
+        onDeleteNoteRequested: noteList.delete(note)
+    }
+
     Action {
         id: quitAction
         shortcut: "Ctrl+q"
-        onTriggered: {
-            Qt.quit()
-        }
+        onTriggered: Qt.quit()
     }
 }

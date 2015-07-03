@@ -8,8 +8,9 @@ Rectangle {
     property Item currentNoteView: emptyNoteView.createObject(this)
     property var note: null
 
+    signal deleteNoteRequested(var note)
+
     onNoteChanged: {
-        console.log('note changed: ' + container.note);
         currentNoteView.destroy();
         currentNoteView = ((note !== null)
             ? noteView.createObject(this, {note: note})
@@ -18,6 +19,20 @@ Rectangle {
 
     function focusTitleEditor() {
         currentNoteView.focusTitleEditor();
+    }
+
+    function confirmedDeleteNote() {
+        var dialogComponent = Qt.createComponent("ConfirmDeleteDialog.qml");
+        var dialog = dialogComponent.createObject(container);
+
+        if (dialog == null) {
+            console.log("Error creating dialog: " + dialogComponent.errorString());
+        }
+
+        dialog.open();
+        dialog.onYes.connect(function() {
+            deleteNoteRequested(note);
+        })
     }
 
     Component {
@@ -56,6 +71,14 @@ Rectangle {
                     }
 
                     Button {
+                        id: deleteButton
+                        text: "Delete"
+                        Layout.preferredHeight: parent.height - 6
+
+                        onClicked: deleteNoteAction.trigger()
+                    }
+
+                    Button {
                         id: editButton
                         text: noteTextView.state == "normal" ? "Edit" : "Done";
                         Layout.preferredHeight: parent.height - 6
@@ -86,5 +109,11 @@ Rectangle {
             horizontalAlignment: Text.AlignHCenter
             font.pointSize: 16
         }
+    }
+
+    Action {
+        id: deleteNoteAction
+        shortcut: "Ctrl+Shift+d"
+        onTriggered: confirmedDeleteNote()
     }
 }

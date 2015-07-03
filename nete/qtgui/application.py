@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QApplication, QWidget
 from PyQt5.QtQml import (qmlRegisterType, qmlRegisterSingletonType,
-                         QQmlEngine)
+                         QQmlApplicationEngine)
 from nete.qtgui.main_window_builder import MainWindowBuilder
 from nete.qtgui.tray_icon import TrayIcon
 from nete.qtgui.qmltypes.qml_note_list_model import QmlNoteListModel
@@ -29,7 +29,7 @@ class Application(QApplication):
             self._main_window.setVisibility(not self._main_window.isVisible())
 
     def _init_qml_engine(self):
-        self.qml_engine = QQmlEngine()
+        self.qml_engine = QQmlApplicationEngine()
         self.qml_engine.quit.connect(self.quit)
 
         qmlRegisterType(QmlNoteListModel, 'nete', 1, 0, 'NoteList')
