@@ -9,6 +9,7 @@ Window {
     id: window
     width: 640
     height: 400
+    flags: Qt.Dialog
 
     FontAwesome {
         id: awesome
