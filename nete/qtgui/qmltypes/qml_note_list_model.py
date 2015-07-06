@@ -76,6 +76,7 @@ class QmlNoteListModel(QAbstractListModel):
         self.notes.insert(row, note)
         self.endInsertRows()
 
+        self.save(note)
         self.noteCreated.emit(note, row)
 
     @pyqtSlot(QmlNote)

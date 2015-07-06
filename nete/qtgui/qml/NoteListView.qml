@@ -10,6 +10,14 @@ Rectangle {
 
     signal noteSelected(string noteId)
 
+    Connections {
+        target: noteList
+
+        onNoteCreated: {
+            listView.currentIndex = row;
+        }
+    }
+
     Component {
         id: noteDelegate
 
