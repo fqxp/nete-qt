@@ -76,6 +76,8 @@ class QmlNoteListModel(QAbstractListModel):
         self.notes.insert(row, note)
         self.endInsertRows()
 
+        note.titleChanged.connect(self._noteTitleChanged)
+
         self.save(note)
         self.noteCreated.emit(note, row)
 
