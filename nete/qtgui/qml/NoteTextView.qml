@@ -69,6 +69,7 @@ Rectangle {
 
             Component.onCompleted: {
                 cursorPosition = length;
+                forceActiveFocus();
             }
 
             onTextChanged: {
