@@ -62,6 +62,10 @@ class QmlNoteListModel(QAbstractListModel):
                 lambda note: note.id == note_id,
                 self.notes)[0]
 
+    @pyqtSlot(int, result=QmlNote)
+    def noteAt(self, index):
+        return self.notes[index]
+
     @pyqtSlot(QmlNote)
     def save(self, qml_note):
         self._storage.save(qml_note.note)

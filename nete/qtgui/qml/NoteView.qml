@@ -68,6 +68,12 @@ Rectangle {
                         note: container.note
                         Layout.fillWidth: true
                         Layout.fillHeight: true
+
+                        onEditFinished: {
+                            if (note.text === "") {
+                                noteTextView.state = "editing";
+                            }
+                        }
                     }
 
                     Button {

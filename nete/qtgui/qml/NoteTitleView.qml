@@ -8,6 +8,8 @@ Item {
 
     property var note
 
+    signal editFinished()
+
     states: [
         State {
             name: "normal"
@@ -49,6 +51,7 @@ Item {
             note.title = newTitle;
             note.save()
             container.state = "normal";
+            container.editFinished();
         }
 
         onEditCancelled: {

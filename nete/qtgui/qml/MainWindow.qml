@@ -43,7 +43,7 @@ Window {
             Layout.fillHeight: true
 
             onNoteSelected: {
-                noteView.note = noteList.note(noteId);
+                noteView.note = noteList.noteAt(index);
             }
         }
 
