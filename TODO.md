@@ -12,7 +12,10 @@
 
 * attach files
 
-## optional
+## Ideas
+* Forward/Back buttons and shortcuts
+
+## Optional
 * Loading indicator for long-loading notes (because of slow markdown-rendering)
 * Lazy saving (save every few seconds only) - though it works for now
 * use a faster markdown renderer (this one is very slow for large texts)

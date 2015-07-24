@@ -1,6 +1,7 @@
 import QtQuick 2.3
 import QtQuick.Controls 1.2
 import QtQuick.Layouts 1.1
+import "controls" as Awesome
 import nete 1.0
 
 Rectangle {
@@ -38,9 +39,13 @@ Rectangle {
             }
         }
 
-        CreateNoteButton {
+        Awesome.Button {
+            id: newNoteText
             Layout.fillWidth: true
             Layout.preferredHeight: 40
+            icon: awesome.icons.fa_plus_circle
+            text: "New Note"
+            font.pointSize: 16
 
             onClicked: {
                 createNoteAction.trigger();
