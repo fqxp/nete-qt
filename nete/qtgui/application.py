@@ -1,5 +1,5 @@
 from PyQt5.QtDBus import QDBusConnection
-from PyQt5.QtWidgets import QApplication, QWidget
+from PyQt5.QtWidgets import QApplication
 from PyQt5.QtQml import qmlRegisterType, qmlRegisterSingletonType, QQmlApplicationEngine
 from nete.qtgui.main_controller_builder import MainControllerBuilder
 from nete.qtgui.tray_icon import TrayIcon

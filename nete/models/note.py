@@ -30,5 +30,5 @@ class Note(object):
         self._text = text
 
     def __unicode__(self):
-        return '<Note id=%r title=%s text=%s...' % (
+        return '<Note id=%r title=%s text=%s...>' % (
             self.id, self.title, self.text[:30])
