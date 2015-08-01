@@ -1,19 +1,21 @@
 from nete.models.note import Note
 import glob
 import json
+import os
 import os.path
 import uuid
 
 
 class FilesystemNoteStorage(object):
 
-    def __init__(self, note_dir):
-        self._note_dir = note_dir
+    def __init__(self, context):
+        self._context = context
+        print 'Using directory %s' % self.note_dir()
 
     def list(self):
         notes = [
             self.load(self._id_from_filename(os.path.basename(filename)))
-            for filename in glob.glob(os.path.join(self._note_dir, '*.md'))
+            for filename in glob.glob(os.path.join(self.note_dir(), '*.json'))
         ]
 
         return notes
@@ -30,6 +32,8 @@ class FilesystemNoteStorage(object):
         return note
 
     def save(self, note):
+        self._ensure_dir_exists(self.note_dir())
+
         if note.id is None:
             note.id = str(uuid.uuid4())
 
@@ -48,8 +52,23 @@ class FilesystemNoteStorage(object):
     def delete(self, note):
         os.unlink(self._filename_from_id(note.id))
 
+    def note_dir(self):
+        if 'NETE_DIR' in os.environ:
+            basedir = os.environ['NETE_DIR']
+        elif 'XDG_DATA_HOME' in os.environ:
+            basedir = os.path.join(os.environ['XDG_DATA_HOME'], 'nete')
+        else:
+            basedir = os.path.join(os.path.expanduser('~'), '.local', 'share', 'nete')
+
+        return os.path.join(basedir, self._context)
+
+    def _ensure_dir_exists(self, note_dir):
+        if not os.path.isdir(note_dir):
+            os.makedirs(note_dir)
+
     def _filename_from_id(self, id):
-        return os.path.join('notes', '%s.md' % id)
+        return os.path.join(self.note_dir(), '%s.json' % id)
 
     def _id_from_filename(self, filename):
-        return filename[:-3]
+        return os.path.splitext(os.path.basename(filename))[0]
+

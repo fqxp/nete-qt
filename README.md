@@ -30,5 +30,22 @@ Use
 
 to toggle the visibility of the main window.
 
+# Development
+First, set up a virtualenv to install required development packages into and
+install development requirements:
+
+    cd $PROJECT_DIR
+    virtualenv --system-site-packages venv
+    source venv/bin/activate
+    pip install -r requirements-dev.txt
+
+Activate the virtual environment:
+
+    ./venv/bin/activate
+
+You can now run the tests like this:
+
+    nosetests tests
+
 # Credits
 * Notepad icon: http://pixabay.com/en/notepad-editor-pencil-document-97841/

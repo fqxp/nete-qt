@@ -1,5 +1,4 @@
 # TODO
-* Creating notes doesn't work
 * Save notes to proper place (~/.nete or so)
 * Clean up, organize code
 * Make Debian package

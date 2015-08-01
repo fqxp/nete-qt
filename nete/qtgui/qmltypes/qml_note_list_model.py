@@ -1,12 +1,11 @@
-from PyQt5.QtCore import Qt, QObject, pyqtSignal, pyqtSlot, QVariant, QAbstractListModel, QModelIndex
+from PyQt5.QtCore import Qt, QObject, pyqtSignal, pyqtSlot, pyqtProperty, QVariant, QAbstractListModel, QModelIndex
 from PyQt5.QtQml import QQmlListProperty
 from .qml_note import QmlNote
-from nete.services.filesystem_note_storage import FilesystemNoteStorage
+from nete.models.nete_uri import NeteUri
+from nete.services.storage_factory import StorageFactory
 
 
 class QmlNoteListModel(QAbstractListModel):
-
-    NOTE_DIR = './notes'
 
     IdRole = Qt.UserRole + 1
     TitleRole = Qt.UserRole + 2
@@ -15,7 +14,7 @@ class QmlNoteListModel(QAbstractListModel):
 
     def __init__(self, parent=None):
         super(QmlNoteListModel, self).__init__(parent)
-        self._storage = FilesystemNoteStorage(self.NOTE_DIR)
+        self._storage = None
         self._notes = None
 
     @property
@@ -24,8 +23,16 @@ class QmlNoteListModel(QAbstractListModel):
             self._load()
         return self._notes
 
+    @pyqtProperty('QString')
+    def nete_uri(self):
+        return unicode(self._nete_uri)
+
+    @nete_uri.setter
+    def nete_uri(self, nete_uri):
+        self._nete_uri = NeteUri(nete_uri)
+
     def _load(self):
-        notes = self._storage.list()
+        notes = self.storage().list()
         self._notes = []
         for note in notes:
             qml_note = QmlNote(note, parent=self)
@@ -68,11 +75,11 @@ class QmlNoteListModel(QAbstractListModel):
 
     @pyqtSlot(QmlNote)
     def save(self, qml_note):
-        self._storage.save(qml_note.note)
+        self.storage().save(qml_note.note)
 
     @pyqtSlot()
     def create(self):
-        note = QmlNote(self._storage.create(), parent=self)
+        note = QmlNote(self.storage().create(), parent=self)
         note.title = 'Unnamed'
 
         row = 0
@@ -92,4 +99,10 @@ class QmlNoteListModel(QAbstractListModel):
         del self._notes[row]
         self.endRemoveRows()
 
-        self._storage.delete(qml_note)
+        self.storage().delete(qml_note)
+
+    def storage(self):
+        if self._storage is None:
+            self._storage = StorageFactory.create_storage(self._nete_uri)
+
+        return self._storage

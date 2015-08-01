@@ -24,6 +24,7 @@ Window {
 
     NoteList {
         id: noteList
+        nete_uri: 'nete:notes'
 
         onNoteCreated: {
             noteView.note = note;
