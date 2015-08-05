@@ -18,23 +18,13 @@ class Application(QApplication):
 
         self.init_qml_engine()
 
-        self._main_controller = MainControllerBuilder(self.qml_engine).build()
-        self._main_controller_adaptor = MainControllerAdaptor(self._main_controller)
+        self.main_controller = MainControllerBuilder(self.qml_engine).build()
+        self.main_controller_adaptor = MainControllerAdaptor(self._main_controller)
 
-        self._tray_icon = TrayIcon(self)
-        self._tray_icon.activated.connect(self.tray_icon_activated)
-        self._tray_icon.show()
+        self.tray_icon = TrayIcon(self._main_controller)
+        self.tray_icon.show()
 
         self.register_dbus_interface()
-
-    def register_dbus_interface(self):
-        connection = QDBusConnection.sessionBus()
-        connection.registerObject('/', self._main_controller)
-        connection.registerService('de.fqxp.nete')
-
-    def tray_icon_activated(self, reason):
-        if reason == TrayIcon.Trigger:
-            self._main_controller.toggle()
 
     def init_qml_engine(self):
         self.qml_engine = QQmlApplicationEngine()
@@ -43,6 +33,10 @@ class Application(QApplication):
         qmlRegisterType(QmlNoteListModel, 'nete', 1, 0, 'NoteList')
         qmlRegisterSingletonType(MarkdownRenderer, 'nete', 1, 0, 'MarkdownRenderer', self.make_renderer)
 
+    def register_dbus_interface(self):
+        connection = QDBusConnection.sessionBus()
+        connection.registerObject('/', self._main_controller)
+        connection.registerService('de.fqxp.nete')
+
     def make_renderer(self, *args):
         return MarkdownRenderer()
-
