@@ -1,15 +1,15 @@
 # TODO
-* Save notes to proper place (~/.nete or so)
-* Clean up, organize code
-* Make Debian package
-* Write tests (at least for the models)
-* Update nete command line client
-* first version
+[✓] Save notes to proper place (~/.nete or so)
+[ ] Clean up, organize code
+[ ] Make Debian package
+[ ] Write tests (at least for the models)
+[ ] Update nete command line client
+[ ] first version
 
-* Sort notes by something (name, last change)
-* Search functionality (by title, by content)
+[ ] Sort notes by something (name, last change)
+[ ] Search functionality (by title, by content)
 
-* attach files
+[ ] attach files
 
 ## Ideas
 * Forward/Back buttons and shortcuts
