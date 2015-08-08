@@ -6,6 +6,7 @@ from nete.qtgui.tray_icon import TrayIcon
 from nete.qtgui.qmltypes.qml_note_list_model import QmlNoteListModel
 from nete.qtgui.dbus_interface import MainControllerAdaptor
 from nete.services.markdown_renderer import MarkdownRenderer
+import sys
 
 
 class Application(QApplication):
@@ -19,9 +20,9 @@ class Application(QApplication):
         self.init_qml_engine()
 
         self.main_controller = MainControllerBuilder(self.qml_engine).build()
-        self.main_controller_adaptor = MainControllerAdaptor(self._main_controller)
+        self.main_controller_adaptor = MainControllerAdaptor(self.main_controller)
 
-        self.tray_icon = TrayIcon(self._main_controller)
+        self.tray_icon = TrayIcon(self.main_controller)
         self.tray_icon.show()
 
         self.register_dbus_interface()
@@ -35,8 +36,17 @@ class Application(QApplication):
 
     def register_dbus_interface(self):
         connection = QDBusConnection.sessionBus()
-        connection.registerObject('/', self._main_controller)
+        connection.registerObject('/', self.main_controller)
         connection.registerService('de.fqxp.nete')
 
     def make_renderer(self, *args):
         return MarkdownRenderer()
+
+
+def main():
+    #import profile
+    #profile.run('sys.exit(app.exec_())')
+
+    app = Application(sys.argv)
+
+    sys.exit(app.exec_())

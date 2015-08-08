@@ -2,6 +2,7 @@
 # coding: utf-8
 
 from nete.services.filesystem_note_storage import FilesystemNoteStorage
+import sys
 
 
 class CommandLineClient(object):
@@ -55,3 +56,8 @@ Text:
             raise Exception('id doesn‘t exist')
 
         return matching_notes[0]
+
+
+def main():
+    CommandLineClient().run(sys.argv)
+

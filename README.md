@@ -66,13 +66,18 @@ install development requirements:
     source venv/bin/activate
     pip install -r requirements-dev.txt
 
-Activate the virtual environment:
+Activate the virtual environment and run setup:
 
-    ./venv/bin/activate
+    ./venv/bin/activate:
+    python setup.py develop
 
 You can now run the tests like this:
 
     nosetests tests
+
+Or you can run one of the clients using
+
+    NETE_DIR=. nete-qt
 
 # Credits
 * Notepad icon: http://pixabay.com/en/notepad-editor-pencil-document-97841/
