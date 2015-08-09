@@ -1,6 +1,6 @@
 # TODO
 [✓] Save notes to proper place (~/.nete or so)
-[ ] Clean up, organize code
+[✓] Clean up, organize code
 [ ] Make Debian package
 [ ] Write tests (at least for the models)
 [ ] Update nete command line client

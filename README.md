@@ -27,18 +27,23 @@ Install required Debian packages:
         qml-module-qtquick-controls qml-module-qtquick-layouts \
         fonts-font-awesome
 
-The current version of PyQt5 shipped with Debian (5.3.2) is buggy and nete-qt doesn‘t
-work with it. You need to download and install PyQt5 and SIP yourself, see
-http://pyqt.sourceforge.net/Docs/PyQt5/installation.html for instructions.
+The current version of PyQt5 shipped with Debian (5.3.2) is
+[buggy](http://python.6.x6.nabble.com/Qml-Instantiate-a-model-derived-from-QAbstractListModel-from-qml-td5078937.html)
+and nete-qt doesn‘t work with it. You need to download and [install
+PyQt5 and SIP](http://pyqt.sourceforge.net/Docs/PyQt5/installation.html).
 
-See
-http://python.6.x6.nabble.com/Qml-Instantiate-a-model-derived-from-QAbstractListModel-from-qml-td5078937.html
-for comments on the bug.
+An alternative is to use `schroot` to cleanly use stretch packags on a jessie
+system.
 
-Later, when Debian packages might be fixed, you'd need to install these
-packages:
+### On Debian stretch (testing)
 
-    apt-get install python-pyqt5 python-pyqt5.qtquick
+Install required Debian packages:
+
+    apt-get install python-pyqt5 python-pyqt5.qtquick \
+        python-markdown qml-module-qt-labs-settings \
+        qml-module-qtquick2 qml-module-qtquick-window2 \
+        qml-module-qtquick-controls qml-module-qtquick-layouts \
+        fonts-font-awesome
 
 ## Install nete
 
