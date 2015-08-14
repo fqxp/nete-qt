@@ -84,5 +84,11 @@ Or you can run one of the clients using
 
     NETE_DIR=. nete-qt
 
+# Make Debian package (for Debian 9/stretch only)
+
+This should do the trick:
+
+    debian/rules binary
+
 # Credits
 * Notepad icon: http://pixabay.com/en/notepad-editor-pencil-document-97841/
