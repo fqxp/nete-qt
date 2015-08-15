@@ -12,10 +12,9 @@ class QmlNoteListModel(QAbstractListModel):
 
     noteCreated = pyqtSignal(QmlNote, int, arguments=['note', 'row'])
 
-    def __init__(self, nete_uri, parent=None):
+    def __init__(self, storage, parent=None):
         super(QmlNoteListModel, self).__init__(parent)
-        self._nete_uri = NeteUri(nete_uri)
-        self._storage = None
+        self._storage = storage
         self._notes = None
 
     @property
@@ -24,16 +23,8 @@ class QmlNoteListModel(QAbstractListModel):
             self._load()
         return self._notes
 
-    @pyqtProperty('QString')
-    def nete_uri(self):
-        return unicode(self._nete_uri)
-
-    @nete_uri.setter
-    def nete_uri(self, nete_uri):
-        self._nete_uri = NeteUri(nete_uri)
-
     def _load(self):
-        notes = self.storage().list()
+        notes = self._storage.list()
         self._notes = []
         for note in notes:
             qml_note = QmlNote(note, parent=self)
@@ -76,11 +67,11 @@ class QmlNoteListModel(QAbstractListModel):
 
     @pyqtSlot(QmlNote)
     def save(self, qml_note):
-        self.storage().save(qml_note.note)
+        self._storage.save(qml_note.note)
 
     @pyqtSlot()
     def create(self):
-        note = QmlNote(self.storage().create(), parent=self)
+        note = QmlNote(self._storage.create(), parent=self)
         note.title = 'Unnamed'
 
         row = 0
@@ -100,18 +91,14 @@ class QmlNoteListModel(QAbstractListModel):
         del self._notes[row]
         self.endRemoveRows()
 
-        self.storage().delete(qml_note)
-
-    def storage(self):
-        if self._storage is None:
-            self._storage = StorageFactory.create_storage(self._nete_uri)
-
-        return self._storage
+        self._storage.delete(qml_note)
 
 
-class QNoteListModelFactory(QObject):
+class QmlNoteListModelFactory(QObject):
 
     @pyqtSlot('QString', result='QVariant')
     def create(self, nete_uri):
-        return QmlNoteListModel(nete_uri, parent=self)
+        nete_uri = NeteUri(nete_uri)
+        storage = StorageFactory.create_storage(nete_uri)
+        return QmlNoteListModel(storage, parent=self)
 
