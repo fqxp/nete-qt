@@ -7,7 +7,7 @@ import nete 1.0
 Rectangle {
     id: container
 
-    property NoteList noteList
+    property var noteList
 
     signal noteSelected(int index)
 

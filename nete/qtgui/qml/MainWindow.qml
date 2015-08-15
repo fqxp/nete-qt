@@ -11,6 +11,21 @@ Window {
     height: 400
     flags: Qt.Dialog
 
+    property string neteUri
+    property var noteList: null
+
+    Component.onCompleted: {
+        noteList = NoteListModelFactory.create(neteUri);
+    }
+
+    Connections {
+        target: noteList
+        onNoteCreated: {
+            noteView.note = note;
+            noteView.focusTitleEditor();
+        }
+    }
+
     FontAwesome {
         id: awesome
     }

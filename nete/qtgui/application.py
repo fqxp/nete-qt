@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import QApplication
 from PyQt5.QtQml import qmlRegisterType, qmlRegisterSingletonType, QQmlApplicationEngine
 from nete.qtgui.main_controller_builder import MainControllerBuilder
 from nete.qtgui.tray_icon import TrayIcon
-from nete.qtgui.qmltypes.qml_note_list_model import QmlNoteListModel
+from nete.qtgui.qmltypes.qml_note_list_model import QNoteListModelFactory
 from nete.qtgui.dbus_interface import MainControllerAdaptor
 from nete.services.markdown_renderer import MarkdownRenderer
 import sys
@@ -31,8 +31,9 @@ class Application(QApplication):
         self.qml_engine = QQmlApplicationEngine()
         self.qml_engine.quit.connect(self.quit)
 
-        qmlRegisterType(QmlNoteListModel, 'nete', 1, 0, 'NoteList')
+        #qmlRegisterType(QmlNoteListModel, 'nete', 1, 0, 'NoteList')
         qmlRegisterSingletonType(MarkdownRenderer, 'nete', 1, 0, 'MarkdownRenderer', self.make_renderer)
+        qmlRegisterSingletonType(QNoteListModelFactory, 'nete', 1, 0, 'NoteListModelFactory', self.make_note_list_model_factory)
 
     def register_dbus_interface(self):
         connection = QDBusConnection.sessionBus()
@@ -41,6 +42,10 @@ class Application(QApplication):
 
     def make_renderer(self, *args):
         return MarkdownRenderer()
+
+    def make_note_list_model_factory(self, parent=None, *args):
+        factory = QNoteListModelFactory(parent=parent)
+        return factory
 
 
 def main():

@@ -12,8 +12,9 @@ class QmlNoteListModel(QAbstractListModel):
 
     noteCreated = pyqtSignal(QmlNote, int, arguments=['note', 'row'])
 
-    def __init__(self, parent=None):
+    def __init__(self, nete_uri, parent=None):
         super(QmlNoteListModel, self).__init__(parent)
+        self._nete_uri = NeteUri(nete_uri)
         self._storage = None
         self._notes = None
 
@@ -106,3 +107,11 @@ class QmlNoteListModel(QAbstractListModel):
             self._storage = StorageFactory.create_storage(self._nete_uri)
 
         return self._storage
+
+
+class QNoteListModelFactory(QObject):
+
+    @pyqtSlot('QString', result='QVariant')
+    def create(self, nete_uri):
+        return QmlNoteListModel(nete_uri, parent=self)
+

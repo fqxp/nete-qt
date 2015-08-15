@@ -8,5 +8,6 @@ Item {
     MainWindow {
         id: mainWindow
         visible: true
+        neteUri: 'nete:notes'
     }
 }
