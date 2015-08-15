@@ -37,9 +37,10 @@ class FilesystemNoteStorage(object):
         if note.id is None:
             note.id = str(uuid.uuid4())
 
-        print "Saving note %s" % note.id
+        filename = self._filename_from_id(note.id)
+        print "Saving note %s in %s" % (note.id, filename)
 
-        with open(self._filename_from_id(note.id), 'w') as fd:
+        with open(filename, 'w') as fd:
             content = {
                 'title': note.title,
                 'text': note.text,
