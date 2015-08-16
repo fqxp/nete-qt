@@ -29,12 +29,16 @@ Rectangle {
 
             ListView {
                 id: listView
-                anchors.fill: parent
                 model: noteList
                 delegate: NoteListItem {}
 
                 onCurrentItemChanged: {
                     container.noteSelected(listView.currentIndex);
+                    positionViewAtIndex(listView.currentIndex, ListView.Contain);
+                }
+
+                onCountChanged: {
+                    positionViewAtIndex(listView.currentIndex, ListView.Center);
                 }
             }
         }

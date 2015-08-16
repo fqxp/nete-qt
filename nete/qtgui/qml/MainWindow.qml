@@ -37,29 +37,28 @@ Window {
         property alias height: window.height
     }
 
-    NoteList {
-        id: noteList
-        nete_uri: 'nete:notes'
-
-        onNoteCreated: {
-            noteView.note = note;
-            noteView.focusTitleEditor();
-        }
-    }
-
-    GridLayout {
-        columns: 2
-        rows: 1
-        columnSpacing: 0
+    RowLayout {
+        spacing: 0
         anchors.fill: parent
 
-        NoteListView {
-            noteList: noteList
-            Layout.preferredWidth: 200
-            Layout.fillHeight: true
+        ColumnLayout {
+            Layout.maximumWidth: 240
 
-            onNoteSelected: {
-                noteView.note = noteList.noteAt(index);
+            spacing: 0
+
+            FilterView {
+                Layout.fillWidth: true
+                noteList: window.noteList
+            }
+
+            NoteListView {
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                noteList: window.noteList
+
+                onNoteSelected: {
+                    noteView.note = noteList.noteAt(index);
+                }
             }
         }
 
