@@ -2,6 +2,12 @@
 [✓] Save notes to proper place (~/.nete or so)
 [✓] Clean up, organize code
 [✓] Make Debian package
+[✓] Fix tray icon
+[ ] Filtering notes by title
+[ ] Bug: Fix segmentation fault on exit
+[ ] Bug: New note doesn't work
+[ ] Bug: Page up/down don't work in edit mode
+[ ] Script for importing from tomboy
 [ ] Write tests
 [ ] Update nete command line client
 [ ] first version

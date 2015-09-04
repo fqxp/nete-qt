@@ -43,7 +43,7 @@ Install required Debian packages:
         python-markdown qml-module-qt-labs-settings \
         qml-module-qtquick2 qml-module-qtquick-window2 \
         qml-module-qtquick-controls qml-module-qtquick-layouts \
-        fonts-font-awesome
+        qml-module-qtquick-dialogs fonts-font-awesome
 
 ## Install nete
 
@@ -85,6 +85,10 @@ Or you can run one of the clients using
     NETE_DIR=. nete-qt
 
 # Make Debian package (for Debian 9/stretch only)
+
+Install requirements
+
+    apt-get install debhelper dh-python python-setuptools
 
 This should do the trick:
 

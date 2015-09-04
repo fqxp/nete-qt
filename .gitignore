@@ -8,3 +8,4 @@ debian/nete/
 debian/source/
 debian/files
 .pybuild/
+core
