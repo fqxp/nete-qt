@@ -1,12 +1,16 @@
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QSystemTrayIcon, QMenu, QAction, QApplication
+import pkg_resources
 
 
 class TrayIcon(QSystemTrayIcon):
 
+    TRAY_ICON = pkg_resources.resource_filename(__name__, 'tray_icon.png')
+
     def __init__(self,  parent=None):
         super(TrayIcon, self).__init__(parent=parent)
-        self.setIcon(QIcon('/home/frank/devel/nete/nete-qt/icons/notepad.png'))
+
+        self.setIcon(QIcon(self.TRAY_ICON))
         self.setContextMenu(self.build_menu())
         self.activated.connect(self.on_activated)
 

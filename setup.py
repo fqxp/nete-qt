@@ -11,6 +11,7 @@ setup(
     url='https://github.com/fqxp/nete-qt',
     packages=find_packages(),
     package_data={
+        '': ['*.png'],
         'nete.qtgui': [
             'qml/*.qml',
             'qml/controls/*.qml',
