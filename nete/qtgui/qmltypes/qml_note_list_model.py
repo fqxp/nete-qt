@@ -55,24 +55,22 @@ class QmlNoteListModel(QAbstractListModel):
         note = QmlNote(self._storage.create(), parent=self)
         note.title = 'Unnamed'
 
-        row = 0
-        self.beginInsertRows(QModelIndex(), row, row)
-        self._filtered_notes.insert(row, note)
-        self.endInsertRows()
+        self._notes.append(note)
+        self._update_filtered_notes()
 
         note.titleChanged.connect(self._noteTitleChanged)
 
         self.save(note)
-        self.noteCreated.emit(note, row)
+
+        index = self._filtered_notes.index(note)
+        self.noteCreated.emit(note, index)
 
     @pyqtSlot(QmlNote)
-    def delete(self, qml_note):
-        self._storage.delete(qml_note)
+    def delete(self, note):
+        self._storage.delete(note)
 
-        row = self._notes.index(qml_note)
-        self.beginRemoveRows(QModelIndex(), row, row)
+        row = self._notes.index(note)
         del self._notes[row]
-        self.endRemoveRows()
 
         self._update_filtered_notes()
 
@@ -120,12 +118,8 @@ class QmlNoteListModel(QAbstractListModel):
     def _sort_notes(self, notes):
         return sorted(notes, key=self._sort_key_fn)
 
-    def _filter_notes(self, unfiltered_notes):
-        filter_fn = lambda note: (
-            self._filter_expr == '' or
-            self._filter_expr.lower() in note.title.lower())
-
-        return filter(filter_fn, self._notes)
+    def _filter_notes(self, notes):
+        return filter(self._filter_fn, notes)
 
     def _update_filtered_notes(self):
         filtered_notes = self._sort_notes(self._filter_notes(self._notes))
@@ -170,6 +164,10 @@ class QmlNoteListModel(QAbstractListModel):
 
     def _sort_key_fn(self, note):
         return note.title.lower()
+
+    def _filter_fn(self, note):
+       return (self._filter_expr == '' or
+            self._filter_expr.lower() in note.title.lower())
 
 
 class QmlNoteListModelFactory(QObject):
