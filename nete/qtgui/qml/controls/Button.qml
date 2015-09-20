@@ -32,25 +32,34 @@ import QtQuick.Controls.Styles 1.0
 Button {
     id: button
     property string icon
-    property color color: "black"
     property font font
+    property bool enabled: false
 
     style: ButtonStyle {
         id: buttonstyle
         property font font: button.font
-        property color foregroundColor: button.color
+        property color foregroundColor: "black"
+        property color backgroundColor: "white"
+        property color enabledForegroundColor: "white"
+        property color enabledBackgroundColor: "#888888"
+        property color hoverColor: "#eeeeee"
+        property color enabledHoverColor: "#aaaaaa"
 
         background: Item {
             Rectangle {
                 id: baserect
                 anchors.fill: parent
-                color: button.hovered ? "#eeeeee" : "transparent"
+                color: button.hovered ?
+                    (button.enabled ? enabledHoverColor : hoverColor)
+                    : (button.enabled ? enabledBackgroundColor : backgroundColor)
             }
         }
 
         label: Item {
+            anchors.centerIn: parent
             Text {
-                color: buttonstyle.foregroundColor
+                id: iconLabel
+                color: button.enabled ? buttonstyle.enabledForegroundColor : buttonstyle.foregroundColor
                 font {
                     pointSize: buttonstyle.font.pointSize
                     family: awesome.family
@@ -58,15 +67,16 @@ Button {
                 text: icon
                 visible: !(icon === "")
                 anchors {
-                    right: text.left; 
-                    rightMargin: buttonstyle.font.pointSize / 2; 
-                    verticalCenter: text.verticalCenter
+                    right: textLabel.visible ? textLabel.left : undefined;
+                    rightMargin: textLabel.visible ? control.font.pointSize / 2 : undefined;
+                    centerIn: textLabel.visible ? null : parent;
+                    verticalCenter: textLabel.verticalCenter
                 }
             }
 
             Text {
-                id: text
-                color: buttonstyle.foregroundColor
+                id: textLabel
+                color: button.enabled ? buttonstyle.enabledForegroundColor : buttonstyle.foregroundColor
                 font: buttonstyle.font
                 renderType: Text.NativeRendering
                 text: control.text

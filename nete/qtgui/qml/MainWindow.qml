@@ -3,6 +3,7 @@ import QtQuick.Controls 1.2
 import QtQuick.Layouts 1.1
 import QtQuick.Window 2.2
 import Qt.labs.settings 1.0
+import "controls" as Awesome
 import nete 1.0
 
 Window {
@@ -46,9 +47,29 @@ Window {
 
             spacing: 0
 
-            FilterView {
+            RowLayout {
+                id: listViewBar;
                 Layout.fillWidth: true
+                Layout.alignment: Qt.AlignRight
+
+                Awesome.Button {
+                    id: toggleFilterButton
+                    Layout.preferredWidth: 40
+                    Layout.preferredHeight: 40
+                    icon: awesome.icons.fa_filter
+                    enabled: filterView.visible
+
+                    onClicked: {
+                        filterView.visible = !filterView.visible;
+                    }
+                }
+            }
+
+            FilterView {
+                id: filterView
                 noteList: window.noteList
+                Layout.fillWidth: true
+                visible: false
             }
 
             NoteListView {
@@ -72,6 +93,14 @@ Window {
     Connections {
         target: noteView
         onDeleteNoteRequested: noteList.delete(note)
+    }
+
+    Action {
+        id: showFilterAction
+        shortcut: "Ctrl+f"
+        onTriggered: {
+            filterView.visible = !filterView.visible;
+        }
     }
 
     Action {

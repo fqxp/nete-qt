@@ -3,10 +3,21 @@ import QtQuick.Controls 1.2
 import nete 1.0
 
 Rectangle {
+    id: container
     height: 40
-    color: "red"
+    color: "white"
+    visible: false
 
     property var noteList
+
+    onVisibleChanged: {
+        if (container.visible) {
+            filterExprField.focus = true;
+            noteList.setFilter(filterExprField.text);
+        } else {
+            noteList.setFilter('');
+        }
+    }
 
     TextField {
         id: filterExprField
@@ -18,11 +29,5 @@ Rectangle {
             text = '';
             focus = false;
         }
-    }
-
-    Action {
-        id: filterAction
-        shortcut: "Ctrl+f"
-        onTriggered: filterExprField.focus = true
     }
 }
