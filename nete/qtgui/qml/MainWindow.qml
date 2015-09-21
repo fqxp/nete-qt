@@ -10,7 +10,6 @@ Window {
     id: window
     width: 640
     height: 400
-    flags: Qt.Dialog
 
     property string neteUri
     property var noteList: null
